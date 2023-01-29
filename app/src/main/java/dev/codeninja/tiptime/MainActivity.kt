@@ -3,6 +3,7 @@ package dev.codeninja.tiptime
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
@@ -40,8 +41,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TipTimeScreen() {
 	var amountInput by remember { mutableStateOf("") }
+	var tipPercentInput by remember { mutableStateOf("15") }
 	val amount = amountInput.toDoubleOrNull() ?: 0.0
-	val tip = calculateTip(amount)
+	val tipPercent = tipPercentInput.toDoubleOrNull() ?: 0.0
+	val tip = calculateTip(amount, tipPercent)
 
 	Column(
 		modifier = Modifier.padding(32.dp),
@@ -58,7 +61,19 @@ fun TipTimeScreen() {
 
 		Spacer(modifier = Modifier.height(16.dp))
 
-		EditNumberField(value = amountInput, onValueChange = { amountInput = it})
+		EditNumberField(
+			value = amountInput,
+			onValueChange = { amountInput = it},
+			label = R.string.bill_amount
+		)
+
+		Spacer(modifier = Modifier.height(10.dp))
+
+		EditNumberField(
+			value = tipPercentInput,
+			onValueChange = { tipPercentInput = it },
+			label = R.string.how_was_the_service
+		)
 
 		Spacer(modifier = Modifier.height(24.dp))
 
@@ -72,11 +87,15 @@ fun TipTimeScreen() {
 }
 
 @Composable
-fun EditNumberField(value: String, onValueChange: (String) -> Unit) {
+fun EditNumberField(
+	value: String,
+	onValueChange: (String) -> Unit,
+	@StringRes label: Int
+) {
 	TextField(
 		value = value,
 		onValueChange = onValueChange,
-		label = { Text(text = stringResource(id = R.string.cost_of_service)) },
+		label = { Text(text = stringResource(id = label)) },
 		modifier = Modifier.fillMaxWidth(),
 		singleLine = true,
 		keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
