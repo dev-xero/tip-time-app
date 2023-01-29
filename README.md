@@ -7,3 +7,5 @@ This is my 5th app created using Kotlin and Jetpack Compose
 app > release > app-release.apk
 ```
 That's where the app is located
+
+__Unit Tests are Included__
